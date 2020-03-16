@@ -1,0 +1,24 @@
+rechnik = {}
+
+if __name__ == "__main__":
+    while True:
+        x = input()
+        if x == "end":
+            break
+        parts = x.split(",")
+        poeni = int(parts[4])+int(parts[5])+int(parts[6])
+        if poeni > 50:
+            poeni = ((poeni - 1)//10)+1
+        else:
+            poeni = 5
+        if (int(parts[2]) not in rechnik.keys()):
+
+            update_rechnik = { int(parts[2]) : "Student: " + parts[0] +" "+ parts[1] +"\n\t"
+                              					+ parts[3] +": "+ str(poeni) +"\n"}
+        else:
+            update_rechnik = { int(parts[2]) : rechnik.get(int(parts[2]))+ "\t"
+                              					+ parts[3] +": "+ str(poeni) +"\n"}
+        rechnik.update(update_rechnik)
+
+    for i in rechnik:
+        print(rechnik[i])
