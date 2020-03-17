@@ -1,0 +1,187 @@
+"""
+Во овој проблем ќе ја имплементирате играта Pacman.
+Оваа игра се игра така што имате едно човече кое се движи низ просторот и целта е да ги изеде сите точки притоа избегнувајќи чудовишта.
+Видео кое ќе ве запознае со играта: https://www.youtube.com/watch?v=i_OjztdQ8iw.
+Притоа во нашиот пример е поедноставена оваа игра така што секогаш ќе имате правоаголни форми и не треба да избегнувате чудовишта.
+Целта на оваа поедноставена игра е да се изедат сите точки во просторот.
+
+Креирајте класа Player која го означува играчот во играта.
+Во оваа класа треба да ги чувате моменталните позиции на играчот во играта (x и y координати).
+Оваа класа има метода move(position) што означува придвижување на играчот на дадената позиција.
+Потоа креирајте класа Game која ќе ја означува моменталната игра.
+Во оваа класа треба да го чувате просторот на игра (матрица) и притоа може да си чувате и помошни вредности.
+За крај креирајте класа Pacman во која ќе чувате инстанца од класата Player и класата Game .
+Во оваа класа треба да имате една метода play_game() во која треба да ја имплементирате логиката за играта.
+Почетната позиција на играчот е (0,0). Играчот може да се движи горе, долу, лево или десно.
+Притоа ако во некоја можна позиција каде може да се придвижи играчот има точка тогаш таа позиција е посакуваната позиција каде
+треба да се придвижи. Ако има повеќе позиции каде има точки, во тој случај играчот избира случајно каде да се придвижи.
+Ако во ниедна можна позиција нема точки, тогаш пак играчот избира случајно на која позиција ќе се придвижи.
+Играта завршува кога нема преостанати точки кои треба да ги изеде играчот.
+
+Влез: На влез прво добивате ширина и висина на просторот за игра.
+Потоа во секој нареден ред добивате состојбата на редот од просторот.
+Притоа секоја позиција се означува со # што означува празно поле и . што означува дека во полето има точка.
+
+Излез: На излез се печати секој чекор кој го направил играчот се додека не ги изел сите точки.
+
+Напомена: За да симулирате случајно придвижување може да го користите модулот random.
+Метода која генерира случаен број во даден ранг е randint(range_from,range_to).
+Може да користите и дополнителни методи од овој модул кои може да ги најдете во документација.
+Бидејќи работиме со случајни придвижувања, НЕ МОРА тест примерите да ви поминуваат, туку се само за ваше тестирање.
+
+Sample input
+5
+5
+##.##
+..#..
+.###.
+.....
+#..#.
+
+Sample output
+[1, 0]
+[2, 0]
+[3, 0]
+[3, 1]
+[4, 1]
+[4, 2]
+[3, 2]
+[3, 3]
+[3, 4]
+[2, 4]
+[1, 4]
+[1, 3]
+[2, 3]
+[3, 3]
+[4, 3]
+[4, 4]
+[3, 4]
+[2, 4]
+[3, 4]
+[3, 3]
+[2, 3]
+[2, 2]
+[1, 2]
+[1, 1]
+[2, 1]
+[2, 0]
+[3, 0]
+[3, 1]
+[3, 2]
+[2, 2]
+[3, 2]
+[2, 2]
+[2, 1]
+[2, 2]
+[2, 3]
+[1, 3]
+[0, 3]
+[0, 2]
+"""
+
+import random
+
+
+class Player:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def move(self, x, y):
+        self.x = x
+        self.y = y
+
+
+class Game:
+
+    def __init__(self, matrix):
+        self.matrix = matrix
+
+    def broi_tochki(self):
+        zbir = 0
+        for i in range(rows):
+            for j in range(columns):
+                if self.matrix[i][j] == '.':
+                    zbir = zbir + 1
+        return zbir
+
+
+class Pacman:
+
+    def __init__(self, player, game):
+        self.player = player
+        self.game = game
+
+    def play_game(self):
+        self.game.matrix[0][0] = '#'
+        broj_tochki = self.game.broi_tochki()
+
+        if broj_tochki == 0:
+            print('Nothing to do here')
+
+        while broj_tochki != 0:
+            pogodni = []
+            obichni = []
+            pogodni_pozicii = 0
+            obichni_pozicii = 0
+
+            if self.player.x > 0:
+                if self.game.matrix[self.player.x - 1][self.player.y] == '.':
+                    pogodni_pozicii = pogodni_pozicii + 1
+                    pogodni.append(f"[{self.player.x - 1}, {self.player.y}]")
+                else:
+                    obichni_pozicii = obichni_pozicii + 1
+                    obichni.append(f"[{self.player.x - 1}, {self.player.y}]")
+
+            if self.player.y > 0:
+                if self.game.matrix[self.player.x][self.player.y - 1] == '.':
+                    pogodni_pozicii = pogodni_pozicii + 1
+                    pogodni.append(f"[{self.player.x}, {self.player.y - 1}]")
+                else:
+                    obichni_pozicii = obichni_pozicii + 1
+                    obichni.append(f"[{self.player.x}, {self.player.y - 1}]")
+
+            if self.player.x < rows - 1:
+                if self.game.matrix[self.player.x + 1][self.player.y] == '.':
+                    pogodni_pozicii = pogodni_pozicii + 1
+                    pogodni.append(f"[{self.player.x + 1}, {self.player.y}]")
+                else:
+                    obichni_pozicii = obichni_pozicii + 1
+                    obichni.append(f"[{self.player.x + 1}, {self.player.y}]")
+
+            if self.player.y < columns - 1:
+                if self.game.matrix[self.player.x][self.player.y + 1] == '.':
+                    pogodni_pozicii = pogodni_pozicii + 1
+                    pogodni.append(f"[{self.player.x}, {self.player.y + 1}]")
+                else:
+                    obichni_pozicii = obichni_pozicii + 1
+                    obichni.append(f"[{self.player.x}, {self.player.y + 1}]")
+
+            if pogodni_pozicii != 0:
+                random_indeks = random.randint(0, pogodni_pozicii - 1)
+                parts = list(pogodni[random_indeks])
+                self.player.move(int(parts[1]), int(parts[4]))
+                print(pogodni[random_indeks])
+                self.game.matrix[int(parts[1])][int(parts[4])] = "#"
+                broj_tochki = broj_tochki - 1
+            else:
+                random_indeks = random.randint(0, obichni_pozicii - 1)
+                parts = list(obichni[random_indeks])
+                self.player.move(int(parts[1]), int(parts[4]))
+                print(obichni[random_indeks])
+
+
+if __name__ == '__main__':
+    rows = int(input())
+    columns = int(input())
+
+    matrix = []
+    for i in range(0, rows):
+        matrix_row = [el for el in list(input())]
+        matrix.append(matrix_row)
+
+    player = Player(0, 0)
+    game = Game(matrix)
+    pacman = Pacman(player, game)
+    pacman.play_game()
