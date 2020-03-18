@@ -31,12 +31,10 @@ Sample output
 
 def conversion(matrix, n):
     final_matr = [[izbroj(matrix, i, j, n) for j in range(n)] for i in range(0, n)]
-    """
-    pechatenje = ""
-    for i in range(n):
-        pechatenje = pechatenje + "   ".join(map(str, final_matr[i]))
-        pechatenje = pechatenje + "\n"
-    """
+    # pechatenje = ""
+    # for i in range(n):
+    #     pechatenje = pechatenje + "   ".join(map(str, final_matr[i]))
+    #     pechatenje = pechatenje + "\n"
     #↑↑↑ ALTERNATIVEN NACHIN BEZ LIST COMPERHANSION ZA PECHATENJE NA FINALNOTO RESHENIE
     pechatenje = "\n".join(["   ".join(map(str, x)) for x in final_matr])
     return pechatenje
