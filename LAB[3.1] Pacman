@@ -632,21 +632,17 @@ class Pacman(Problem):
 
     def h(self, node):
         sum = 0
-        pac_y = self.initial[1]
-        pac_x = self.initial[2]
-        shortest_dot_y = pac_y
-        shortest_dot_x = pac_x
-        shortest_distance = Pacman.mhd([pac_y, pac_x], [shortest_dot_y, shortest_dot_x])
-        for i in range(0, len(self.initial[3])):
-            for x, y in self.initial[3]:
-                tmp = Pacman.mhd([pac_y, pac_x], [y, x])
-                if tmp < shortest_distance:
-                    shortest_dot_y = y
-                    shortest_dot_x = x
-                    shortest_distance = tmp
-            sum += shortest_distance
-            pac_y = shortest_dot_y
-            pac_x = shortest_dot_x
+        pac_y = node.state[1]
+        pac_x = node.state[2]
+        tmp_dict = dict()
+
+        for y, x in node.state[3]:
+            tmp = Pacman.mhd((pac_y, pac_x), (y, x))
+            tmp_dict[y, x] = tmp
+
+        tmp_dict = sorted(tmp_dict.items(), key=lambda kv: (kv[1], kv[0]))
+        if len(tmp_dict) != 0:
+            sum += tmp_dict[0][1]
         return sum
 
 
